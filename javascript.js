@@ -1,23 +1,19 @@
-function calculateGPA() {
-    let totalPoints = 0;
-    let totalCredits = 0;
- 
-    const courses = document.querySelectorAll('.course-row'); 
+function exportToCSV() {
     
-    courses.forEach(row => {
-        const grade = parseFloat(row.querySelector('.grade-input').value);
-        const credit = parseFloat(row.querySelector('.credit-input').value);
+    const name = document.querySelector('input[placeholder="zahra"]').value || "Student";
+    const semester = document.querySelector('input[placeholder="licence2"]').value || "Semester";
+    const gpaResult = document.getElementById('result').innerText;
 
-        if (!isNaN(grade) && !isNaN(credit)) {
-            totalPoints += grade * credit;
-            totalCredits += credit;
-        }
-    });
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Name,Semester,GPA\n";
+    csvContent += ${name},${semester},${gpaResult}\n;
 
-    if (totalCredits > 0) {
-        const gpa = totalPoints / totalCredits;
-        document.getElementById('result').innerText = "Your GPA is: " + gpa.toFixed(2);
-    } else {
-        alert("Please enter valid grades and credits.");
-    }
+    
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "gpa_results.csv");
+    document.body.appendChild(link);
+
+    link.click(); 
 }
